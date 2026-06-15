@@ -1,5 +1,4 @@
-name: Build Images
-
+name: Publish
 on:
   push:
     tags:
