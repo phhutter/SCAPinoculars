@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jritter/scapinoculars)](https://goreportcard.com/report/github.com/jritter/scapinoculars)
 [![Releases](https://img.shields.io/github/v/release/jritter/scapinoculars?label=Release)](https://github.com/jritter/scapinoculars/releases)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
+sd
 SCAPinoculars can be used to transform and display raw ARF formated [OpenSCAP](http://www.open-scap.org/) repots into a human readable HTML report. It traverses a configurable directory (environment Variable REPORT_DIR), looks for ARF reports, and renders them into a HTML report, which will reside in the same directory. It can also handle bzip2 compressed xml files. For rendering, it relies on the `oscap` tool.
 
 The reports are then exposed through an embedded web server, by default running on port 2112. The port can be configured by configuring the `PORT` environment variable.
