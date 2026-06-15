@@ -1,5 +1,5 @@
 # We do a two stage build
-FROM docker.io/library/golang:1.26 as builder
+FROM docker.io/library/golang:1.26.4-alpine as builder
 WORKDIR /build
 COPY . .
 
@@ -14,7 +14,7 @@ ENV GO111MODULE=on \
 RUN go build -a -o scapinoculars .
 
 # Now let's assemble the image
-FROM registry.access.redhat.com/ubi10/ubi-minimal
+FROM registry.access.redhat.com/ubi10/ubi-minimal:10.2-1781509346
 
 # We need the openscap-scanner package to generate the fancy
 # HTML reports
