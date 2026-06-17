@@ -21,17 +21,17 @@ jobs:
         uses: ietf-tools/semver-action@c90370b2958652d71c06a3484129a4d423a6d8a8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          default-bump: patch
-          tag-prefix: v
           branch: main
+          prefix: v
+          noVersionBumpBehavior: patch
 
       - name: Create release tag
-        if: steps.semver.outputs.version != ''
+        if: steps.semver.outputs.next != ''
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git tag "${{ steps.semver.outputs.version }}"
-          git push origin "${{ steps.semver.outputs.version }}"
+          git tag "${{ steps.semver.outputs.next }}"
+          git push origin "${{ steps.semver.outputs.next }}"
 
   gobuild:
     name: Go Build and Release
@@ -69,17 +69,17 @@ jobs:
         uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056
         with:
           image: ghcr.io/${{ github.repository_owner }}/scapinoculars
-          tags: ${{ steps.semver.outputs.version }} latest
+          tags: ${{ steps.semver.outputs.next }} latest
           containerfiles: |
             ./Containerfile
           labels: |
             org.opencontainers.image.title=SCAPinoculars
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ steps.semver.outputs.version }}
+            org.opencontainers.image.version=${{ steps.semver.outputs.next }}
             org.opencontainers.image.created=${{ github.event.repository.updated_at }}
             org.opencontainers.image.revision=${{ github.sha }}
           build-args: |
-            VERSION=${{ steps.semver.outputs.version }}
+            VERSION=${{ steps.semver.outputs.next }}
             HASH=${{ github.sha }}
 
       - name: Push to ghcr.io
