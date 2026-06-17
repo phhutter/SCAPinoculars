@@ -22,7 +22,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
-          prefix: v
+          tagFilter: '^v[0-9]+\.[0-9]+\.[0-9]+$'
+          skipInvalidTags: true
           noVersionBumpBehavior: patch
 
       - name: Create release tag
