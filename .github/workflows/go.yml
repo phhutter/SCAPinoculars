@@ -39,9 +39,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   containerdevbuild:
-    name: ContainerImage Build (:dev)
+    name: Container Image Build (:dev)
     runs-on: ubuntu-latest
     needs: gotestbuild
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     permissions:
       packages: write
     steps:
@@ -51,8 +52,8 @@ jobs:
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ghcr.io/phhutter/scapinoculars
-          tags: dev
+          image: ghcr.io/${{ github.repository_owner }}/scapinoculars
+          tags: dev ${{ github.sha }}
           containerfiles: |
             ./Containerfile
           build-args: |
@@ -60,7 +61,6 @@ jobs:
             HASH=${{ github.sha }}
 
       - name: Login to ghcr.io
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: redhat-actions/podman-login@v1
         with:
           registry: ghcr.io
@@ -68,7 +68,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push to ghcr.io
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
