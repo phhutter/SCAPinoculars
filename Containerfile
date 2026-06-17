@@ -7,14 +7,14 @@ COPY . .
 ARG VERSION=main
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64
+    GOOS=linux
 
 # Let's build it! :-)
 RUN go build -a -o scapinoculars .
 
 # Now let's assemble the image
 FROM registry.access.redhat.com/ubi10/ubi-minimal:10.2-1781509346
+ENV BUILD=${HASH}
 
 # We need the openscap-scanner package to generate the fancy
 # HTML reports
