@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
-      - uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee
+      - uses: golangci/golangci-lint-action@v9
 
   gotestbuild:
     name: Go Test Build
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
-      - uses: goreleaser/goreleaser-action@v7.2.2
+      - uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser
           version: '~> v2'
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build image
         id: build-image
-        uses: redhat-actions/buildah-build@v2.13
+        uses: redhat-actions/buildah-build@v2
         with:
           image: ghcr.io/${{ github.repository_owner }}/scapinoculars
           tags: dev ${{ github.sha }}
@@ -59,14 +59,14 @@ jobs:
             HASH=${{ github.sha }}
 
       - name: Login to ghcr.io
-        uses: redhat-actions/podman-login@v1.7
+        uses: redhat-actions/podman-login@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
+        uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
