@@ -16,8 +16,6 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.12
 
   gotestbuild:
     name: Go Test Build
