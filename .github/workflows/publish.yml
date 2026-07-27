@@ -70,7 +70,7 @@ jobs:
 
       - name: Build image
         id: build-image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ghcr.io/${{ github.repository_owner }}/scapinoculars
           tags: ${{ needs.determine-version.outputs.version }} latest
